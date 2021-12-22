@@ -145,16 +145,6 @@ function createOrgs() {
       fatalln "Failed to generate certificates..."
     fi
 
-    infoln "Creating Org2 Identities"
-
-    set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --output="organizations"
-    res=$?
-    { set +x; } 2>/dev/null
-    if [ $res -ne 0 ]; then
-      fatalln "Failed to generate certificates..."
-    fi
-
     infoln "Creating Orderer Org Identities"
 
     set -x
@@ -187,17 +177,13 @@ function createOrgs() {
 
     createOrg1
 
-    infoln "Creating Org2 Identities"
-
-    createOrg2
-
     infoln "Creating Orderer Org Identities"
 
     createOrderer
 
   fi
 
-  infoln "Generating CCP files for Org1 and Org2"
+  infoln "Generating CCP files for Org1"
   ./organizations/ccp-generate.sh
 }
 
@@ -336,7 +322,7 @@ CC_VERSION="1.0"
 # Chaincode definition sequence
 CC_SEQUENCE=1
 # default database
-DATABASE="leveldb"
+DATABASE="couchdb"
 
 # Get docker sock path from environment variable
 SOCK="${DOCKER_HOST:-/var/run/docker.sock}"
